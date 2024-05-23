@@ -29,11 +29,11 @@ tensorflow-metadata==1.12.0
 ## Docker container with GPU support
 ```bash
 # clone git repo
-git clone git@github.com:mrperkett/udacity-project-create-image-classifier-oxford-flowers-102.git .
+git clone git@github.com:mrperkett/udacity-project-create-image-classifier-oxford-flowers-102.git
 cd udacity-project-create-image-classifier-oxford-flowers-102/
 
 # build tensorflow and jupyter docker image
-docker build --no-cache -t udacity-tensorflow-notebook-gpu -f Dockerfile
+docker build --no-cache -t udacity-tensorflow-notebook-gpu -f Dockerfile .
 
 # run the docker container starting a jupyter lab server
 # - mount the current working directory to /work/ in the image
@@ -41,7 +41,7 @@ docker build --no-cache -t udacity-tensorflow-notebook-gpu -f Dockerfile
 #   allow tensorflow to locate already downloaded datasets outside of the Docker image, so they do not need to be
 #   downloaded every time you start a new image.
 local_work_dir="."
-local_datasets_dir="~/tensorflow_datasets/"
+local_datasets_dir=`echo ~`/tensorflow_datasets/
 port=8888
 
 docker run --gpus all -p ${port}:${port} -it --rm -v "${local_work_dir}":/work -v "${local_datasets_dir}":/root/tensorflow_datasets udacity-tensorflow-notebook-gpu -e port=${port}
@@ -65,7 +65,7 @@ git clone git@github.com:mrperkett/udacity-project-create-image-classifier-oxfor
 cd udacity-project-create-image-classifier-oxford-flowers-102/
 
 # build tensorflow and jupyter docker image
-docker build --no-cache -t udacity-tensorflow-notebook-cpu -f Dockerfile-cpu
+docker build --no-cache -t udacity-tensorflow-notebook-cpu -f Dockerfile-cpu .
 
 # run the docker container starting a jupyter lab server
 # - mount the current working directory to /work/ in the image

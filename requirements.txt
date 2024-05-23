@@ -1,0 +1,9 @@
+matplotlib==3.8.2
+numpy==1.26.2
+pandas==2.2.2
+Pillow==10.1.0
+protobuf==3.20.3
+seaborn==0.13.2
+tensorflow-datasets==4.8.0
+tensorflow-hub==0.15.0
+tensorflow-metadata==1.12.0

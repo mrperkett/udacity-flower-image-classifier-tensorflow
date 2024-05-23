@@ -6,8 +6,9 @@ The easiest way to run this project is via Docker container.  I have included a 
 
 ```console
 $ docker image ls
-REPOSITORY                            TAG                  IMAGE ID       CREATED        SIZE
-udacity-tensorflow-notebook-2.15.0    latest               f9f6574c5608   28 hours ago   7.99GB
+REPOSITORY                            TAG                  IMAGE ID       CREATED          SIZE
+udacity-tensorflow-notebook-cpu       latest               2d85bdae5e39   13 minutes ago   2.86GB
+udacity-tensorflow-notebook-gpu       latest               9f532a6348cd   12 hours ago     8.08GB
 ```
 
 These are the versions of the relevant libraries that are installed via `Dockerfile` and `pip`.
@@ -44,7 +45,7 @@ local_work_dir="."
 local_datasets_dir=`echo ~`/tensorflow_datasets/
 port=8888
 
-docker run --gpus all -p ${port}:${port} -it --rm -v "${local_work_dir}":/work -v "${local_datasets_dir}":/root/tensorflow_datasets udacity-tensorflow-notebook-gpu -e port=${port}
+docker run -e port=${port} --gpus all -p ${port}:${port} -it --rm -v "${local_work_dir}":/work -v "${local_datasets_dir}":/root/tensorflow_datasets udacity-tensorflow-notebook-gpu
 # Connect via your browser or other means (e.g. use VSCode Dev Containers to attach to a running container)
 ```
 
@@ -55,13 +56,13 @@ To run a command, replace the end of the function call with the command you with
 docker run --gpus all -p ${port}:${port} -it --rm -v "${local_work_dir}":/work -v "${local_datasets_dir}":/root/tensorflow_datasets udacity-tensorflow-notebook-gpu bash
 
 # Example: run predict.py
-docker run --gpus all -p ${port}:${port} -it --rm -v "${local_work_dir}":/work -v "${local_datasets_dir}":/root/tensorflow_datasets udacity-tensorflow-notebook-gpu python3 ./predict.py test_images/cautleya_spicata.jpg output/saved_model.keras --top_k 5 --category_names label_map.json
+docker run --gpus all -it --rm -v "${local_work_dir}":/work -v "${local_datasets_dir}":/root/tensorflow_datasets udacity-tensorflow-notebook-gpu python3 /work/predict.py /work/test_images/cautleya_spicata.jpg /work/output/saved_model.keras --top_k 5 --category_names /work/label_map.json
 ```
 
 ## Docker container with no GPU support
 ```bash
 # clone git repo
-git clone git@github.com:mrperkett/udacity-project-create-image-classifier-oxford-flowers-102.git .
+git clone git@github.com:mrperkett/udacity-project-create-image-classifier-oxford-flowers-102.git
 cd udacity-project-create-image-classifier-oxford-flowers-102/
 
 # build tensorflow and jupyter docker image
@@ -76,7 +77,7 @@ local_work_dir="."
 local_datasets_dir=`echo ~`/tensorflow_datasets/
 port=8888
 
-docker run --gpus all -p ${port}:${port} -it --rm -v "${local_work_dir}":/work -v "${local_datasets_dir}":/root/tensorflow_datasets udacity-tensorflow-notebook-cpu -e port=${port}
+docker run -e port=${port} -p ${port}:${port} -it --rm -v "${local_work_dir}":/work -v "${local_datasets_dir}":/root/tensorflow_datasets udacity-tensorflow-notebook-cpu
 # Connect via your browser or other means (e.g. use VSCode Dev Containers to attach to a running container)
 ```
 
@@ -84,10 +85,10 @@ To run a command, replace the end of the function call with the command you with
 
 ```bash
 # Example: open a bash shell
-docker run --gpus all -p ${port}:${port} -it --rm -v "${local_work_dir}":/work -v "${local_datasets_dir}":/root/tensorflow_datasets udacity-tensorflow-notebook-cpu bash
+docker run -p ${port}:${port} -it --rm -v "${local_work_dir}":/work -v "${local_datasets_dir}":/root/tensorflow_datasets udacity-tensorflow-notebook-cpu bash
 
 # Example: run predict.py
-docker run --gpus all -it --rm -v "${local_work_dir}":/work -v "${local_datasets_dir}":/root/tensorflow_datasets udacity-tensorflow-notebook-cpu python3 ./predict.py test_images/cautleya_spicata.jpg output/saved_model.keras --top_k 5 --category_names label_map.json
+docker run -it --rm -v "${local_work_dir}":/work -v "${local_datasets_dir}":/root/tensorflow_datasets udacity-tensorflow-notebook-cpu python3 /work/predict.py /work/test_images/cautleya_spicata.jpg /work/output/saved_model.keras --top_k 5 --category_names /work/label_map.json
 ```
 
 # Running `Project_Image_Classifier_Project.ipynb`
@@ -145,8 +146,7 @@ Note that all the file paths are relative to the container mounted volume.  Adju
 ```console
 $ local_work_dir="."
 $ local_datasets_dir=`echo ~`/tensorflow_datasets/
-$ docker run --gpus all -it --rm -v "${local_work_dir}":/work -v "${local_datasets_dir}":/root/tensorflow_datasets udacity-tensorflow-notebook-gpu python3 /work/predict.py /work/test_images/cautleya_spicata.jpg /work/output/saved_model.keras --top_k 5 --category_names
-/work/label_map.json
+$ docker run --gpus all -it --rm -v "${local_work_dir}":/work -v "${local_datasets_dir}":/root/tensorflow_datasets udacity-tensorflow-notebook-gpu python3 /work/predict.py /work/test_images/cautleya_spicata.jpg /work/output/saved_model.keras --top_k 5 --category_names /work/label_map.json
 class_idx     prob       class_name
 60            0.5900     cautleya spicata
 83            0.0808     columbine
